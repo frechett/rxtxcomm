@@ -696,6 +696,7 @@ private void addSpecifiedPorts(String names, int PortType)
 						"ttyUSB", // for USB frobs
 						"rfcomm",       // bluetooth serial device
 						"ttyircomm", // linux IrCommdevices (IrDA serial emu)
+						"ttyACM",// linux CDC ACM devices
 						};
 						CandidatePortPrefixes=Temp;
 					}
