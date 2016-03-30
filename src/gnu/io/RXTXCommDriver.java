@@ -97,14 +97,7 @@ public class RXTXCommDriver implements CommDriver
 		   the Library.
 		*/
 		String JarVersion = RXTXVersion.getVersion();
-		String LibVersion;
-		try {
-		        LibVersion = RXTXVersion.nativeGetVersion();
-		} catch ( Error UnsatisfiedLinkError )
-		{
-			// for rxtx prior to 2.1.7
-			LibVersion = nativeGetVersion();
-		}
+		String LibVersion = RXTXVersion.getNativeVersion();
 		if ( devel )
 		{
 			if ( ! noVersionOutput )
@@ -116,7 +109,7 @@ public class RXTXCommDriver implements CommDriver
 			}
 		}
 
-		if ( ! JarVersion.equals( LibVersion ) )
+		if ( ! RXTXVersion.checkVersion( LibVersion ) )
 		{
 			System.out.println( "WARNING:  RXTX Version mismatch\n\tJar version = " + JarVersion + "\n\tnative lib Version = " + LibVersion );
 		}

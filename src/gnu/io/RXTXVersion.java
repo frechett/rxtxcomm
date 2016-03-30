@@ -72,12 +72,56 @@ public class RXTXVersion
 	comments:     
 		      See INSTALL for details.
 ------------------------------------------------------------------------------*/
+	private static String VersionMajor;
 	private static String Version;
+	private static String NativeVersion;
 
 	static {
 		RXTXVersion.loadLibrary( "rxtxSerial" );
-		Version = "RXTX-2.2 (CVS snapshot 2011.02.03, modified by CMU CREATE Lab, http://code.google.com/p/create-lab-commons/)";
+		VersionMajor = "RXTX-2.2";
+		Version = VersionMajor + " (CVS snapshot 2011.02.03, modified by CMU CREATE Lab, http://code.google.com/p/create-lab-commons/)";
+		String s;
+		try {
+			s = RXTXVersion.nativeGetVersion();
+		} catch ( Error UnsatisfiedLinkError )
+		{
+			// for rxtx prior to 2.1.7
+			s = nativeGetVersion();
+		}
+		NativeVersion = s;
 	}
+
+	/**
+	 * static method to check the version of the native library.
+	 * @param LibVersion the native library version.
+	 * @return true if major version matches, false otherwise.
+	 * @see #getNativeVersion()
+	 */
+	public static boolean checkVersion(String nativeVersion) {
+		return nativeVersion.startsWith(VersionMajor);
+	}
+	
+	/**
+	 * static method to return the native library version of RXTX.
+	 * @return a string representing the version  "RXTX-1.4-9"
+	 */
+	public static String getNativeVersion() {
+		return NativeVersion;
+	}
+	
+	/**
+	 * static method to return the revision text of RXTX.
+	 * @return the revision text of RXTX.
+	 */
+	public static String getRevisionText() {
+		String s = "RXTXCommDriver version " + Version;
+		if (Version.equals(NativeVersion)) {
+			return s;
+		} else {
+			return s + "\nnative library version " + NativeVersion;
+		}
+	}
+
 	/**
 	*  static method to return the current version of RXTX
 	*  unique to RXTX.
