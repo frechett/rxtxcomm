@@ -414,10 +414,14 @@ private void addSpecifiedPorts(String names, int PortType)
       String file_loc = null;
       // Old style: properties file must be in JRE folder
       String ext_dirs = System.getProperty("java.ext.dirs");
+      // Fixed null pointer exception (ISTI)
+      if (ext_dirs != null && ext_dirs.length() != 0)
+      {
       String[] dirArray = ext_dirs.split(System.getProperty("path.separator"));
+      String fileSeparator = System.getProperty("file.separator");
       for (int i = 0; i < dirArray.length; i++)
          {
-         String file_name = dirArray[i] + System.getProperty("file.separator") + "gnu.io.rxtx.properties";
+         String file_name = dirArray[i] + fileSeparator + "gnu.io.rxtx.properties";
          File file = new File(file_name);
          if (file.exists())
             {
@@ -425,6 +429,7 @@ private void addSpecifiedPorts(String names, int PortType)
             break;
             }
          }
+      }
       if (file_loc != null)
          {
          FileInputStream in = null;
